@@ -16,6 +16,112 @@ To implement a linear regression model to predict housing prices based on featur
 Steps Taken
 Dataset Creation/Loading
 
+Output
+
+ SquareFootage  NumBedrooms  Location
+0           1360            2  suburban
+1           4272            3     urban
+2           3592            1     rural
+3            966            6     rural
+4           4926            1     rural
+
+SquareFootage  NumBedrooms  Location_suburban  Location_urban  \
+0           1360            2               True           False   
+1           4272            3              False            True   
+2           3592            1              False           False   
+3            966            6              False           False   
+4           4926            1              False           False   
+
+      HousePrice  
+0  314267.220307  
+1  861428.341362  
+2  617443.402870  
+3  439469.510490  
+4  816931.314750  
+SquareFootage          int64
+NumBedrooms            int64
+Location_suburban       bool
+Location_urban          bool
+HousePrice           float64
+dtype: object
+
+const                float64
+SquareFootage          int64
+NumBedrooms            int64
+Location_suburban       bool
+Location_urban          bool
+dtype: object
+     const  SquareFootage  NumBedrooms  Location_suburban  Location_urban
+29     1.0           2028            1              False           False
+535    1.0           3519            4               True           False
+695    1.0           4507            4               True           False
+557    1.0           3371            1              False            True
+836    1.0           2871            5               True           False
+29     369708.909415
+535    754229.877227
+695    879772.770840
+557    672499.580891
+836    687666.902315
+Name: HousePrice, dtype: float64
+
+[12]
+0s
+
+const                float64
+SquareFootage        float64
+NumBedrooms          float64
+Location_suburban    float64
+Location_urban       float64
+dtype: object
+float64
+const                True
+SquareFootage        True
+NumBedrooms          True
+Location_suburban    True
+Location_urban       True
+dtype: bool
+True
+
+True
+True
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.990
+Model:                            OLS   Adj. R-squared:                  0.990
+Method:                 Least Squares   F-statistic:                 1.951e+04
+Date:                Wed, 24 Jul 2024   Prob (F-statistic):               0.00
+Time:                        00:06:23   Log-Likelihood:                -9088.8
+No. Observations:                 800   AIC:                         1.819e+04
+Df Residuals:                     795   BIC:                         1.821e+04
+Df Model:                           4                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const       2524.0216   2626.319      0.961      0.337   -2631.318    7679.362
+x1           149.6494      0.589    253.991      0.000     148.493     150.806
+x2          4.999e+04    431.983    115.712      0.000    4.91e+04    5.08e+04
+x3          3.039e+04   1813.144     16.759      0.000    2.68e+04    3.39e+04
+x4          8.069e+04   1821.866     44.290      0.000    7.71e+04    8.43e+04
+==============================================================================
+Omnibus:                        0.733   Durbin-Watson:                   2.013
+Prob(Omnibus):                  0.693   Jarque-Bera (JB):                0.648
+Skew:                          -0.067   Prob(JB):                        0.723
+Kurtosis:                       3.042   Cond. No.                     1.23e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.23e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+Testing MSE: 457245373.1531
+Testing R-squared: 0.9900
+
+![Screenshot 2024-07-24 055028](https://github.com/user-attachments/assets/a72ff791-0d85-4995-9f1b-0b87aba978dd)
+
+
+
 Generated a synthetic dataset with features: square footage, number of bedrooms, and location.
 Data Preprocessing
 
