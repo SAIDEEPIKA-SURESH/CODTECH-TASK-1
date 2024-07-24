@@ -1,0 +1,81 @@
+// in real life, linear regression models predict outcomes like house prices based on features such as square footage and location. These models help real estate professionals and investors make informed decisions about property values and market trends. //
+
+
+
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+# Step 1: Create a Synthetic Dataset
+np.random.seed(42)
+n_samples = 1000
+square_footage = np.random.randint(500, 5000, n_samples)
+num_bedrooms = np.random.randint(1, 7, n_samples)
+location = np.random.choice(['urban', 'suburban', 'rural'], n_samples)
+
+# Combine features into a DataFrame
+df = pd.DataFrame({
+    'SquareFootage': square_footage,
+    'NumBedrooms': num_bedrooms,
+    'Location': location
+})
+
+# Step 2: Convert Categorical Data to Numeric
+df = pd.get_dummies(df, columns=['Location'], drop_first=True)
+
+# Generate synthetic house prices
+coefficients = [150, 50000, 80000, 30000]
+house_prices = (coefficients[0] * df['SquareFootage'] +
+                coefficients[1] * df['NumBedrooms'] +
+                coefficients[2] * df['Location_urban'] +
+                coefficients[3] * df['Location_suburban'] +
+                np.random.normal(scale=20000, size=n_samples))
+
+df['HousePrice'] = house_prices
+
+# Step 3: Data Preprocessing
+X = df.drop('HousePrice', axis=1)
+y = df['HousePrice']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Add a constant to the model
+X_train = sm.add_constant(X_train)
+X_test = sm.add_constant(X_test)
+
+# Ensure all data is numeric
+X_train = X_train.astype(float)
+X_test = X_test.astype(float)
+y_train = y_train.astype(float)
+y_test = y_test.astype(float)
+
+# Step 4: Train the Linear Regression Model
+X_train_np = np.asarray(X_train)
+y_train_np = np.asarray(y_train)
+
+# Train the model
+model = sm.OLS(y_train_np, X_train_np).fit()
+
+# Print the model summary
+print(model.summary())
+
+# Step 5: Predict and Evaluate the Model
+y_test_pred = model.predict(X_test)
+
+# Calculate the mean squared error and R-squared score
+mse_test = np.mean((y_test - y_test_pred) ** 2)
+r2_test = 1 - (np.sum((y_test - y_test_pred) ** 2) / np.sum((y_test - np.mean(y_test)) ** 2))
+
+print(f'Testing MSE: {mse_test:.4f}')
+print(f'Testing R-squared: {r2_test:.4f}')
+
+# Step 6: Visualize the Results
+plt.scatter(y_test, y_test_pred)
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.title('Actual vs Predicted Values')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red')  # Diagonal line
+plt.show()
